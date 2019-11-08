@@ -1,4 +1,4 @@
-from fractions import Fractional as F
+from fractions import Fraction as F
 
 rows,columns = list(map(int,input().split()))
 n= int(input())
@@ -31,10 +31,14 @@ def one_test(o,d):
     y=F(oy)
     solution=[]
     while 0<=ox<columns and 0<=oy<rows:
-        time1= (next_horizontal-y)/dy
-        time2 = (next_vertical-x)/dx
-        time=min(time1,time2)
-        if time1==time2:
+        time_to_horizontal= (next_horizontal-y)/dy
+        time_to_vertical = (next_vertical-x)/dx
+        time=min(time_to_horizontal,time_to_vertical)
+        """print(time1,time2,time)
+        print(float(x),float(y) )
+        print(ox,oy)
+        print("next", next_vertical, next_horizontal)"""
+        if time_to_horizontal==time_to_vertical:
             solution.append((ox,oy))
             if dominant_horizontal:
                 solution.append((ox+horizontal,oy))
@@ -52,15 +56,15 @@ def one_test(o,d):
             solution.append((ox,oy))
             x+=dx*time
             y+=dy*time
-            if time1<time2:
-                next_vertical+=vertical
+            if time_to_horizontal<time_to_vertical:
+                next_horizontal+= vertical
                 oy+=vertical
             else:
-                next_horizontal+= horizontal
+                next_vertical+=horizontal
                 ox += horizontal
     
     solution = list(filter(
-        lambda x: 0<=x[0]<columns and 0<=x[1]<row,
+        lambda x: 0<=x[0]<columns and 0<=x[1]<rows,
         solution
     ))
     return solution            
@@ -72,4 +76,5 @@ def one_test(o,d):
      
 for i in range(n):
     ox,oy,dx,dy=list(map(int,input().split()))
-    one_test((ox,oy),(dx,dy))
+    result = one_test((ox,oy),(dx,dy))
+    print(*[" ".join([str(x),str(y)]) for (x,y) in result])
