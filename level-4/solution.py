@@ -1,4 +1,5 @@
 from fractions import Fractional as F
+
 rows,columns = list(map(int,input().split()))
 n= int(input())
 def straight(o,d):
@@ -9,7 +10,7 @@ def straight(o,d):
     vertical = 1 if dy>0 else -1
     if dx==0: horizontal=0
     if dy==0: vertical=0
-    while 0<=ox<cols and 0<=oy<rows:
+    while 0<=ox<columns and 0<=oy<rows:
         result.append((ox,oy))
         ox+=horizontal
         oy+=vertical
@@ -24,12 +25,12 @@ def one_test(o,d):
     next_horizontal = F(1,2)*vertical + oy
     if dx==0 or dy==0:
         return straight(o,d)
-    dominant_horizontal= math.abs(dx)>= math.abs(dy)
+    dominant_horizontal= abs(dx)>= abs(dy)
 
     x=F(ox)
     y=F(oy)
     solution=[]
-    while 0<=ox<cols and 0<=oy<rows:
+    while 0<=ox<columns and 0<=oy<rows:
         time1= (next_horizontal-y)/dy
         time2 = (next_vertical-x)/dx
         time=min(time1,time2)
@@ -58,6 +59,10 @@ def one_test(o,d):
                 next_horizontal+= horizontal
                 ox += horizontal
     
+    solution = list(filter(
+        lambda x: 0<=x[0]<columns and 0<=x[1]<row,
+        solution
+    ))
     return solution            
         
 
