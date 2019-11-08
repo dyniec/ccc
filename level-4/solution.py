@@ -50,8 +50,8 @@ def one_test(o,d):
             y+=dy*time
             ox+=horizontal
             oy+=vertical
-            next_vertical+=vertical
-            next_horizontal+=horizontal
+            next_vertical+=horizontal
+            next_horizontal+=vertical
         else:
             solution.append((ox,oy))
             x+=dx*time
