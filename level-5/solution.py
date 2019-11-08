@@ -1,3 +1,12 @@
+k = int(input())
+panel_price = []
+panel_country = []
+for _ in range(k):
+    a, b = list(map( int, input().split()))
+    panel_country.append(a)
+    panel_price.append(b)
+
+
 rows,columns = list(map(int,input().split()))
 map_country = []
 map_altitude = []
