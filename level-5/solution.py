@@ -1,7 +1,8 @@
-k = int(input())
+import math
+panel_num= int(input())
 panel_price = []
 panel_country = []
-for _ in range(k):
+for _ in range(panel_num):
     a, b = list(map( int, input().split()))
     panel_country.append(a)
     panel_price.append(b)
@@ -63,6 +64,9 @@ def squared_euclid(a,b):
      (x1,y1)=a
      (x2,y2)=b
      return (x1-x2)**2 + (y1-y2)**2
+def country_dist(a,b):
+    ret=int(math.sqrt(squared_euclid( (a.row,a.column),(b.row,b.column))))
+    return ret
 
      
 for country in capitals:
@@ -71,7 +75,8 @@ for country in capitals:
     average=(row,column)
     if map_country[row][column]==country.color:
         if not check_if_border(column,row):
-            print(column,row)
+            country.row=row
+            country.column=column
             continue
     candidate=country.inner[0]
     smallest_dist=squared_euclid(average,candidate)
@@ -81,6 +86,43 @@ for country in capitals:
             candidate=field
             smallest_dist=dist
     (row,column)=candidate
-    print(column, row)
+    country.row=row
+    country.column=column
         
     
+
+dists = [ [None]*countries_num for _ in range(countries_num)]
+for i in range(countries_num):
+    dists[i][i]=0
+for i in range(rows):
+    for j in range(columns-1):
+        a=map_country[i][j]
+        b=map_country[i][j+1]
+        if a!=b:
+            if dists[a][b] is None:
+                dists[a][b]=country_dist(capitals[a],capitals[b])
+                dists[b][a]=dists[a][b]
+for i in range(rows-1):
+    for j in range(columns):
+        a=map_country[i][j]
+        b=map_country[i+1][j]
+        if a!=b:
+            if dists[a][b] is None:
+                dists[a][b]=country_dist(capitals[a],capitals[b])
+                dists[b][a]=dists[a][b]
+
+for k in range(countries_num):
+    for i in range(countries_num):
+        for j in range(countries_num):
+            if dists[i][k] is not None and dists[k][j] is not None:
+                if dists[i][j] is None:
+                    dists[i][j]=dists[i][k]+dists[k][j]
+                elif dists[i][k]+dists[k][j]<dists[i][j] :
+                    dists[i][j]=dists[i][k]+dists[k][j]
+                    
+for i in range(countries_num):
+    res=[]
+    for j in range(panel_num):
+        cost=panel_price[j]+dists[i][panel_country[j]]
+        res.append(cost)
+    print(*res)
