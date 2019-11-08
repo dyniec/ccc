@@ -1,4 +1,6 @@
-mkdir out
+mkdir -p in
+mkdir -p out
+
 for i in $(ls in);
 do
 	echo running on $i;
